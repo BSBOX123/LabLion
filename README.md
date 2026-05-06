@@ -1,49 +1,67 @@
-#  [프로젝트 기획서] AI 기반 시스템 & 라즈베리파이 홈랩 구축
+# [프로젝트 기획서] Lablion: 개발자 커리어 아카이브 플랫폼 및 홈랩 인프라 구축
 
-## 1. 프로젝트 개요 (Project Overview)
-본 프로젝트는 단순한 웹 애플리케이션 개발을 넘어, **프론트엔드, 백엔드, 데이터베이스, AI 모델 서빙, 그리고 인프라 구축까지 1인 풀스택 & 데브옵스(DevOps) 환경을 바닥부터 직접 구현하는 거대한 여정**입니다. 
-외부 상용 클라우드(AWS, Aiven 등)에 의존하지 않고, 개인용 미니 컴퓨터인 '라즈베리파이(Raspberry Pi)'를 활용해 프라이빗 클라우드(홈랩)를 직접 구축하며 클라우드의 동작 원리와 네트워크, 컨테이너 기술을 깊이 있게 이해하는 것을 목표로 합니다.
-
-## 2. 프로젝트 목표 (Project Goals)
-
-###  현재 구현 목표 (Phase 1: 기능 완성 및 홈랩 배포)
-*   **AI 에이전트 주도 프론트엔드 개발:** AI를 적극 활용하여 React 기반의 모던하고 직관적인 UI/UX 구현 (목록, 검색, 수정, 삭제 기능 완성)
-*   **백엔드 & DB 자체 구현:** Spring Boot를 이용한 REST API 서버 구축 및 MariaDB 스키마 직접 설계
-*   **AI 모델 통합:** 학습된 AI 모델을 Python(FastAPI) 서버로 래핑하여 백엔드와 연동 (지능형 서비스 제공)
-*   **컨테이너(Docker) 기반 프라이빗 클라우드 구축:** 라즈베리파이 위에 도커(Docker)를 설치하고, 프론트, 백엔드, DB, AI 서버를 4개의 완벽히 격리된 독립 컨테이너로 띄워 서비스 운영
-*   **리버스 프록시 및 네트워크 라우팅:** Nginx를 도입하여 외부 인터넷에서 들어오는 요청을 각 컨테이너로 알맞게 분배(라우팅)
-
-###  추후 확장 목표 (Phase 2: 대규모 트래픽 및 무중단 운영)
-*   **대규모 트래픽 방어막 구축:** Redis(인메모리 캐시)를 도입하여 DB 부하 감소 및 응답 속도 극대화, 필요시 메시지 큐(Kafka/RabbitMQ) 도입
-*   **CI/CD 자동화 파이프라인:** GitHub Actions를 활용해, 코드를 푸시하면 라즈베리파이에 자동으로 빌드 및 배포되는 시스템 구축
-*   **컨테이너 오케스트레이션 (선택):** 트래픽 증가 시 서버(컨테이너) 대수를 자동으로 늘리는 오토스케일링(Auto-scaling)을 위해 가벼운 쿠버네티스(K3s) 도입
-
-## 3. 시스템 아키텍처 & 기술 스택 (Tech Stack)
-*   **Frontend:** React, Vite, Axios, TailwindCSS
-*   **Backend:** Java 17+, Spring Boot 3.x, Spring Data JPA
-*   **Database:** MariaDB (또는 MySQL)
-*   **AI Serving:** Python, FastAPI (또는 Flask)
-*   **Infrastructure:** Raspberry Pi 5 (Linux), Docker, Docker Compose, Nginx
+**작성일:** 2026. 05. 06  
+**프로젝트명:** Lablion (랩라이언)  
+**분야:** Full-Stack Development / DevOps / AI Serving
 
 ---
 
-## 4. 핵심 용어 사전 (Glossary)
-*   **클라우드 (Cloud)**
-    *   **정의:** 내 눈앞에 없는 멀리 있는 컴퓨터(서버)의 자원을 인터넷을 통해 빌려 쓰는 환경 그 자체를 말합니다.
-*   **클라우드 컴퓨팅 (Cloud Computing)**
-    *   **정의:** CPU, 메모리, 저장공간, 네트워크, 소프트웨어 등의 컴퓨팅 자원을 필요할 때 필요한 만큼만 인터넷을 통해 제공받고, 사용한 만큼만 요금을 내는 **기술 및 방식**을 뜻합니다. 가상화(Virtualization) 기술이 핵심입니다.
-*   **클라우드 서비스 (Cloud Service)**
-    *   **정의:** 클라우드 컴퓨팅 기술을 활용해 기업들이 상품으로 만들어 파는 서비스를 말합니다. (IaaS, PaaS, SaaS 등)
-*   **대규모 트래픽 처리 (High Traffic Handling)**
-    *   **정의:** 수만~수백만 명의 사용자가 동시에 서비스에 접속할 때, 서버나 데이터베이스가 다운되지 않도록 방어하고 트래픽을 분산시키는 기술적 조치입니다.
-    *   **핵심 기술:** 캐싱(Caching), 메시지 큐(Message Queue), 로드 밸런싱(Load Balancing) 등이 사용됩니다.
-*   **컨테이너 & 도커 (Container & Docker)**
-    *   **정의:** 프로그램을 실행하는 데 필요한 모든 파일, 라이브러리, 환경 변수를 하나의 '박스(컨테이너)'로 포장하는 기술입니다. 도커는 이 컨테이너를 쉽게 만들고 실행하게 해주는 가장 유명한 플랫폼입니다.
+## 1. 프로젝트 개요 (Project Overview)
+본 프로젝트는 개발자의 모든 학습 활동 및 프로젝트 수행 이력을 체계적으로 기록하고 관리하는 커리어 아카이브 플랫폼 Lablion 을 구축하는 것을 목적으로 함. 상용 클라우드 서비스에 의존하지 않고 **라즈베리파이(Raspberry Pi) 기반의 프라이빗 홈랩**을 직접 설계·운용함으로써, 인프라 제어권 확보 및 서비스 전 주기(Life-cycle)에 대한 엔지니어링 역량 강화를 지향함.
 
-## 5. 프로젝트 진행 로드맵 (Next Steps)
-1.  **[인프라]** 라즈베리파이 OS 기본 설정 및 외부(SSH) 접속 환경 구축
-2.  **[인프라]** 라즈베리파이에 Docker 및 Docker Compose 설치
-3.  **[데이터베이스]** Docker를 이용해 MariaDB 컨테이너 실행 및 로컬 PC(DBeaver)와 원격 연결
-4.  **[백엔드]** Spring Boot 프로젝트 빌드(.jar) 및 Docker 이미지 생성 후 라즈베리파이 배포
-5.  **[프론트 & 웹서버]** React 빌드 및 Nginx 컨테이너를 통한 외부 노출 (포트포워딩)
-6.  **[AI 서빙]** Python API 서버 컨테이너화 및 전체 네트워크 연결 테스트
+---
+
+## 2. 프로젝트 목표 (Project Goals)
+
+### 2.1. 단기 목표 (Phase 1: MVP 구현 및 인프라 안정화)
+*   **AI 에이전트 주도 프론트엔드 개발:** AI를 적극 활용하여 React 기반의 모던하고 직관적인 UI/UX 구현
+*   **아카이빙 코어 시스템 구축:** 가중치(중요도/난이도) 기반의 활동 기록 및 KPT 회고, 트러블슈팅 데이터 구조화.
+*   **프라이빗 클라우드 환경 조성:** 라즈베리파이 5 내 Docker 컨테이너 오케스트레이션을 통한 서비스 독립성 확보.
+*   **표준 계층형 아키텍처 적용:** Spring Boot 기반의 안정적인 REST API 설계 및 MariaDB 데이터 정규화.
+*   **네트워크 라우팅 최적화:** Nginx 리버스 프록시를 활용한 보안성 강화 및 트래픽 게이트웨이 구축.
+
+### 2.2. 확장 및 고도화 목표 (Phase 2: 지능화 및 운영 효율화)
+*   **대규모 트래픽 방어막 구축:** Redis(인메모리 캐시)를 도입하여 DB 부하 감소 및 응답 속도 극대화, 필요시 메시지 큐(Kafka/RabbitMQ) 도입
+*   **데이터 자동화 및 통합:** GitHub REST API 연동을 통한 리포지토리 메타데이터(README, 기술 스택 등) 자동 크롤링 및 동기화.
+*   **AI 기반 분석 엔진 탑재:** FastAPI(Python) 기반 AI 서버를 구축하여 프로젝트 요약, 성과 수치화, 포트폴리오 키워드 자동 추출.
+*   **인프라 가용성 확장:** Redis 도입을 통한 데이터 캐싱 및 K3s(Lightweight Kubernetes) 기반의 컨테이너 오토스케일링 검토.
+*   **CI/CD 파이프라인 구축:** GitHub Actions와 연동한 배포 자동화를 구현하여 수정 사항의 즉각적인 운영 환경 반영.
+
+---
+
+## 3. 시스템 아키텍처 및 상세 기술 스택
+
+### 3.1. 기술 스택 (Tech Stack)
+*   **Frontend:** React, Vite, TailwindCSS (Component-based UI)
+*   **Backend:** Java 17, Spring Boot 3.x, Spring Data JPA
+*   **Database:** MariaDB (Relational Data Management)
+*   **AI Serving:** Python, FastAPI, LangChain (Project Analysis)
+*   **Infrastructure:** Raspberry Pi 5, Docker, Docker Compose, Nginx
+
+### 3.2. 데이터 모델링 방향 (Entity Relationship)
+*   **User:** 회원 관리 및 인증 정보 저장.
+*   **Project:** 활동의 본체가 되는 테이블로 시작/종료일, 가중치 정보를 포함.
+*   **Retrospective (KPT):** 프로젝트와 1:1 또는 1:N 매핑되는 회고 데이터.
+*   **Troubleshooting:** 독립적인 에러 해결 사례를 구조화하여 저장.
+
+---
+
+## 4. 수행 로드맵 (Implementation Roadmap)
+
+| 단계 | 구분 | 주요 과업 |
+| :--- | :--- | :--- |
+| **Stage 1** | **인프라 셋업** | 라즈베리파이 보안 설정, Docker Engine 및 Docker Compose 설치 |
+| **Stage 2** | **데이터 설계** | MariaDB 스키마 정의 및 JPA Entity 매핑 (User, Project 중심) |
+| **Stage 3** | **API 서버 개발** | 회원가입/로그인 및 프로젝트 CRUD 비즈니스 로직 구현 |
+| **Stage 4** | **웹 인터페이스** | React 기반 대시보드 및 가중치 기반 정렬 기능 UI 개발 |
+| **Stage 5** | **시스템 통합** | Nginx-App-DB 컨테이너 연동 및 홈랩 실환경 배포 테스트 |
+| **Stage 6** | **AI/자동화 확장** | GitHub 연동 모듈 개발 및 AI 분석 엔진 서버 통합 (Phase 2) |
+
+---
+
+## 5. 핵심 용어 정의 (Glossary)
+
+*   **홈랩 (Home Lab):** 개인 주거 공간 내에 서버 장비를 구축하여 학습 및 테스트 목적으로 운영하는 프라이빗 클라우드 환경.
+*   **가상화 및 컨테이너 (Virtualization & Container):** OS 수준의 격리를 통해 애플리케이션을 실행 환경에 구애받지 않고 구동하게 하는 기술 (Docker).
+*   **KPT 회고:** Keep(강점), Problem(약점), Try(개선점)의 약자로, 프로젝트 종료 후 성과를 분석하는 정형화된 회고 기법.
+*   **CI/CD:** 지속적 통합(Continuous Integration)과 지속적 배포(Continuous Deployment)를 의미하며, 개발부터 운영 배포까지의 과정을 자동화하는 프로세스.
